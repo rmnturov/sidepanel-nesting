@@ -1,0 +1,118 @@
+.side-panel-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.side-panel-container.open {
+  pointer-events: auto;
+}
+
+/* Области отступов - блокируют события мыши */
+.side-panel-margin-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  pointer-events: auto;
+}
+
+.side-panel-margin-right {
+  position: absolute;
+  top: 8px;
+  right: 0;
+  width: 8px;
+  bottom: 8px;
+  pointer-events: auto;
+}
+
+.side-panel-margin-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 8px;
+  pointer-events: auto;
+}
+
+.side-panel {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  bottom: 8px;
+  width: 640px;
+  background-color: white;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  transform: translateX(100%);
+  opacity: 0;
+  visibility: visible;
+  transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
+              opacity 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
+              visibility 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
+              scale 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  overflow: hidden;
+  pointer-events: auto;
+  will-change: transform, opacity, scale;
+  display: flex;
+  flex-direction: column;
+}
+
+.side-panel-container.open .side-panel {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* Эффекты наслоения для нижней панели (полупрозрачная, сдвинута левее, уменьшена) */
+/* Применяется к первой панели при наличии 2 панелей, и ко второй при наличии 3 панелей */
+.side-panel-container.open .side-panel.lower-panel {
+  transform: scale(0.95) translateX(-40px);
+  opacity: 0.7;
+}
+
+/* Эффекты наслоения для третьей панели (самой нижней при наличии 3 панелей) */
+/* Полностью прозрачная, сдвинута левее относительно второй, уменьшена */
+.side-panel-container.open .side-panel.bottom-panel {
+  transform: scale(0.9) translateX(-80px);
+  opacity: 0;
+  visibility: visible;
+  pointer-events: none;
+}
+
+/* Анимация перехода при закрытии верхней панели */
+/* Нижняя панель (lower-panel) становится нормальной - двигается вправо, увеличивается, становится полностью непрозрачной */
+/* becoming-normal имеет более высокую специфичность и переопределяет lower-panel */
+.side-panel-container.open .side-panel.lower-panel.becoming-normal,
+.side-panel-container.open .side-panel.becoming-normal {
+  transform: translateX(0) scale(1);
+  opacity: 1;
+}
+
+/* Кнопка закрытия (крестик) в заголовке */
+.panel-header .side-panel-close {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: none;
+  font-size: 20px;
+  line-height: 1;
+  color: #1a1a1a;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: opacity 0.2s ease;
+}
+
+.panel-header .side-panel-close:hover {
+  opacity: 0.6;
+}
+
+.panel-header .side-panel-close:active {
+  opacity: 0.4;
+}
