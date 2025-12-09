@@ -1,3 +1,9 @@
+:root {
+  --ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  --animation-duration: 300ms;
+  --animation-funciton: var(--ease-in-out-quad);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -5,9 +11,14 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-size: var(--kbq-typography-text-normal-font-size);
+  line-height: var(--kbq-typography-body-text-line-height);
+  letter-spacing: var(--kbq-typography-text-normal-letter-spacing);
+  font-weight: var(--kbq-typography-text-normal-font-weight);
+  font-family: var(--kbq-typography-text-normal-font-family);
+  text-transform: var(--kbq-typography-text-normal-text-transform);
+  font-feature-settings: var(--kbq-typography-text-normal-font-feature-settings);
+  background: var(--kbq-background-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
