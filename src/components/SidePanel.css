@@ -1,3 +1,8 @@
+:root {
+  --side-panel-margin: 8px;
+  --side-panel-layer-offset: 16px;
+}
+
 .side-panel-container {
   position: fixed;
   top: 0;
@@ -17,16 +22,16 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 8px;
+  height: var(--side-panel-margin);
   pointer-events: auto;
 }
 
 .side-panel-margin-right {
   position: absolute;
-  top: 8px;
+  top: var(--side-panel-margin);
   right: 0;
-  width: 8px;
-  bottom: 8px;
+  width: var(--side-panel-margin);
+  bottom: var(--side-panel-margin);
   pointer-events: auto;
 }
 
@@ -35,26 +40,25 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 8px;
+  height: var(--side-panel-margin);
   pointer-events: auto;
 }
 
 .side-panel {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  bottom: 8px;
-  width: 640px;
-  background-color: white;
-  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
+  top: var(--side-panel-margin);
+  right: var(--side-panel-margin);
+  bottom: var(--side-panel-margin);
+  background-color: var(--kbq-background-card);
+  box-shadow: var(--kbq-shadow-popup);
   border-radius: 12px;
   transform: translateX(100%);
   opacity: 0;
   visibility: visible;
-  transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
-              opacity 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
-              visibility 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
-              scale 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  transition: transform var(--animation-duration) var(--animation-funciton),
+    opacity var(--animation-duration) linear,
+    visibility var(--animation-duration) linear,
+    scale var(--animation-duration) var(--animation-funciton);
   overflow: hidden;
   pointer-events: auto;
   will-change: transform, opacity, scale;
@@ -64,20 +68,23 @@
 
 .side-panel-container.open .side-panel {
   transform: translateX(0);
+  transform-origin: center left;
   opacity: 1;
 }
 
-/* Эффекты наслоения для нижней панели (полупрозрачная, сдвинута левее, уменьшена) */
+/* Эффекты наслоения для нижней панели (непрозрачная, сдвинута левее, уменьшена) */
 /* Применяется к первой панели при наличии 2 панелей, и ко второй при наличии 3 панелей */
 .side-panel-container.open .side-panel.lower-panel {
-  transform: scale(0.95) translateX(-40px);
-  opacity: 0.7;
+  transform: scale(0.95) translateX(calc(-1 * var(--side-panel-layer-offset)));
+  transform-origin: center left;
+  opacity: 1;
 }
 
 /* Эффекты наслоения для третьей панели (самой нижней при наличии 3 панелей) */
 /* Полностью прозрачная, сдвинута левее относительно второй, уменьшена */
 .side-panel-container.open .side-panel.bottom-panel {
-  transform: scale(0.9) translateX(-80px);
+  transform: scale(0.9) translateX(calc(-2 * var(--side-panel-layer-offset)));
+  transform-origin: center left;
   opacity: 0;
   visibility: visible;
   pointer-events: none;
@@ -94,25 +101,77 @@
 
 /* Кнопка закрытия (крестик) в заголовке */
 .panel-header .side-panel-close {
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   border: none;
   background: none;
-  font-size: 20px;
-  line-height: 1;
-  color: #1a1a1a;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
-  transition: opacity 0.2s ease;
+  border-radius: 8px;
+  transition: opacity 0.2s linear;
+  flex-shrink: 0;
 }
 
-.panel-header .side-panel-close:hover {
-  opacity: 0.6;
+.panel-header .side-panel-close svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--kbq-icon-contrast-fade);
+}
+
+.panel-header .side-panel-close:hover svg {
+  fill: var(--kbq-states-icon-contrast-hover);
 }
 
 .panel-header .side-panel-close:active {
-  opacity: 0.4;
+  transform: scale(0.97);
+  transition: transform 150ms var(--ease-in-out-quad);
+}
+
+.panel-header .side-panel-close:active svg {
+  fill: var(--kbq-states-icon-contrast-active);
+}
+
+.panel-header .side-panel-close:focus-visible {
+  outline: 2px solid var(--kbq-states-line-focus);
+  outline-offset: 2px;
+}
+
+.panel-content {
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 12px 12px 20px;
+  border-bottom: 1px solid var(--kbq-line-contrast-less);
+}
+
+.panel-header h2 {
+  color: var(--kbq-foreground-contrast);
+  margin: 0;
+  font-size: var(--kbq-typography-title-font-size);
+  line-height: var(--kbq-typography-title-line-height);
+  letter-spacing: var(--kbq-typography-title-letter-spacing);
+  font-weight: var(--kbq-typography-title-font-weight);
+  font-family: var(--kbq-typography-title-font-family);
+  text-transform: var(--kbq-typography-title-text-transform);
+  font-feature-settings: var(--kbq-typography-title-font-feature-settings);
+}
+
+.panel-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 20px 80px 20px;
 }
